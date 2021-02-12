@@ -13,7 +13,7 @@ class BaseOptions():
                             default='./dataset/NewGazeData', help='path to images')
         parser.add_argument('--pretrain_path', type=str,
                             default='./pretrained', help='pretrained model path')
-        parser.add_argument('--inception_path', type=str, default='../pretrained/')
+        parser.add_argument('--inception_path', type=str, default='./inception/')
         parser.add_argument('--img_size', type=int, default=256, help='scale images to this size')
         parser.add_argument('--input_nc', type=int, default=3, help='# of input image channels')
         parser.add_argument('--output_nc', type=int, default=3, help='# of output image channels')
@@ -28,7 +28,7 @@ class BaseOptions():
         parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
         parser.add_argument('--log_dir', type=str, default='./logs', help='logs for tensorboard')
         parser.add_argument('--sample_dir', type=str, default='./sample_dir', help='dir for sample images')
-        parser.add_argument('--test_sample_dir', type=str, default='./TEST_INPUT/img', help='test sample images are saved here')
+        parser.add_argument('--test_sample_dir', type=str, default='./test_samples', help='test sample images are saved here')
         parser.add_argument('--resize_or_crop', type=str, default='resize_and_crop', help='scaling and cropping of images at load time [resize_and_crop|crop|scale_width|scale_width_and_crop]')
 
         self.initialized = True

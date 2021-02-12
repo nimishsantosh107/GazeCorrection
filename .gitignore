@@ -1,6 +1,8 @@
+**/__pycache__
 **/.vscode
 **/dataset
 **/pretrained*
 **/TEST_INPUT
 **/TRAINING
 **/GAZE.zip
+TRAINING.zip
