@@ -11,6 +11,8 @@ class BaseOptions():
 
         parser.add_argument('--data_dir', type=str,
                             default='./dataset/NewGazeData', help='path to images')
+        parser.add_argument('--custom_data_dir', type=str,
+                            default='./dataset/CustomData', help='path to images')
         parser.add_argument('--pretrain_path', type=str,
                             default='./pretrained', help='pretrained model path')
         parser.add_argument('--inception_path', type=str, default='./inception/')

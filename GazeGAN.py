@@ -130,6 +130,57 @@ class Gaze_GAN(object):
             coord.request_stop()
             coord.join(threads)
 
+    def test_webcam(self, input_data):
+        #handle input
+        image, *eye_pos = input_data
+
+        test_image = tf.cast(image, tf.float32)
+        test_image = tf.image.resize_images(test_image, size=(256, 256))
+        test_image = test_image / 127.5 - 1.0
+        test_image = tf.expand_dims(test_image, 0)
+
+        test_eye_pos = tf.convert_to_tensor(eye_pos, dtype=tf.int32)
+        test_eye_pos = tf.expand_dims(test_eye_pos, 0)
+
+        #process
+        init = tf.global_variables_initializer()
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        self.saver = tf.train.Saver()
+
+        with tf.Session(config=config) as sess:
+            sess.run(init)
+            ckpt = tf.train.get_checkpoint_state(self.opt.checkpoints_dir)
+            print('LOADING CKPT')
+            if ckpt and ckpt.model_checkpoint_path:
+                self.saver.restore(sess, ckpt.model_checkpoint_path)
+                print('SUCCESS')
+            else:
+                print('ERR')
+                exit()
+
+            _, _, _, testbatch, testmask = self.dataset.input()
+            coord = tf.train.Coordinator()
+            threads = tf.train.start_queue_runners(sess=sess, coord=coord)
+
+            batch_num = 1
+            for j in range(int(batch_num)):
+                real_test_batch, real_eye_pos = sess.run([test_image, test_eye_pos])
+                # real_test_batch, real_eye_pos = sess.run([testbatch, testmask])
+                batch_masks, batch_left_eye_pos, batch_right_eye_pos = self.get_Mask_and_pos(
+                    real_eye_pos)
+                f_d = {self.x: real_test_batch,
+                       self.xm: batch_masks,
+                       self.x_left_p: batch_left_eye_pos,
+                       self.x_right_p: batch_right_eye_pos}
+
+                output = sess.run([self.x, self.y], feed_dict=f_d)
+                output_concat = self.Transpose(np.array([output[0], output[1]]))
+                save_images(output_concat, '{}/{:02d}.jpg'.format(self.opt.test_sample_dir, j), is_verse=False)
+
+            coord.request_stop()
+            coord.join(threads)
+
     def train(self):
 
         self.t_vars = tf.trainable_variables()

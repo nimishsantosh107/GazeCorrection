@@ -11,6 +11,7 @@ class Dataset(object):
         super(Dataset, self).__init__()
 
         self.data_dir = config.data_dir
+        self.custom_data_dir = config.custom_data_dir
         self.dataset_name = 'NewGazeData'
         self.attr_0_txt = 'eye_train.txt'
         self.attr_1_txt = 'eye_test.txt'
@@ -39,7 +40,8 @@ class Dataset(object):
 
         fh.close()
 
-        fh = open(os.path.join(self.data_dir, self.attr_0_txt))
+        # fh = open(os.path.join(self.data_dir, self.attr_0_txt))
+        fh = open(os.path.join(self.custom_data_dir, 'custom_test.txt'))
         test_images_list = []
         test_eye_pos = []
 
@@ -47,8 +49,13 @@ class Dataset(object):
             eye_pos = []
             f = f.strip('\n')
             filenames = f.split(' ', 5)
-            if os.path.exists(os.path.join(self.data_dir, "0/"+filenames[0]+".jpg")):
-                test_images_list.append(os.path.join(self.data_dir,"0/"+filenames[0]+".jpg"))
+            # if os.path.exists(os.path.join(self.data_dir, "0/"+filenames[0]+".jpg")):
+            #     test_images_list.append(os.path.join(self.data_dir,"0/"+filenames[0]+".jpg"))
+            #     eye_pos.extend([int(value) for value in filenames[1:5]])
+            #     test_eye_pos.append(eye_pos)
+            #     #print test_eye_pos
+            if os.path.exists(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg")):
+                test_images_list.append(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg"))
                 eye_pos.extend([int(value) for value in filenames[1:5]])
                 test_eye_pos.append(eye_pos)
                 #print test_eye_pos
