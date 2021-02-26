@@ -26,7 +26,7 @@ opt = TrainOptions().parse()
 os.environ['CUDA_VISIBLE_DEVICES'] = str(opt.gpu_id)
 
 rects = []
-first_done = False
+first_done = [False, False]
 
 def capture_frame():
     ret, frame = cap.read()
@@ -36,9 +36,9 @@ def capture_frame():
     global rects
     global first_done
 
-    if(first_done == False):
+    if(first_done[0] == False):
         rects = detector(gray, 1)
-        first_done = True
+        first_done[0] = True
 
     if (len(rects) > 0):
 
@@ -83,15 +83,22 @@ def capture_frame():
 
 if __name__ == "__main__":
 
-
     # # DATA GENERATION
     # count = 0
     # while(True):
+
     #     input_data = capture_frame()
         
     #     if(input_data is not None):
     #         img_raw, img, lx, ly, rx, ry = input_data
             
+    #         if(first_done[1] == False):
+    #             first_done[1] = True
+    #             # META DATA
+    #             txt_line = f"{count:04d}a {lx} {ly} {rx} {ry}"
+    #             with open('./dataset/CustomData/custom_test_fixed.txt', 'a') as the_file:
+    #                 the_file.write(txt_line+'\n')
+    #             # print(txt_line)
             
     #         ### ALWAYS CLEAR FOLDERS CustomData
     #         # SAVE IMAGE
@@ -105,7 +112,7 @@ if __name__ == "__main__":
     #         print(txt_line)
 
     #         cv2.imshow('IMG', img)
-    #         cv2.imshow('RAW', img_raw)
+    #         # cv2.imshow('RAW', img_raw)
     #         if cv2.waitKey(1) & 0xFF == ord('q'):
     #             break
 

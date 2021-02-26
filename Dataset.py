@@ -41,7 +41,7 @@ class Dataset(object):
         fh.close()
 
         # fh = open(os.path.join(self.data_dir, self.attr_0_txt))
-        fh = open(os.path.join(self.custom_data_dir, 'custom_test.txt'))
+        fh = open(os.path.join(self.custom_data_dir, 'custom_test_fixed.txt'))
         test_images_list = []
         test_eye_pos = []
 
