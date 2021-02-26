@@ -53,12 +53,11 @@ class Dataset(object):
             #     test_images_list.append(os.path.join(self.data_dir,"0/"+filenames[0]+".jpg"))
             #     eye_pos.extend([int(value) for value in filenames[1:5]])
             #     test_eye_pos.append(eye_pos)
-            #     #print test_eye_pos
+
             if os.path.exists(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg")):
                 test_images_list.append(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg"))
                 eye_pos.extend([int(value) for value in filenames[1:5]])
                 test_eye_pos.append(eye_pos)
-                #print test_eye_pos
 
         fh.close()
         return train_images_list, train_eye_pos, test_images_list, test_eye_pos, len(test_images_list)
@@ -95,7 +94,7 @@ class Dataset(object):
 
         batch_image2, batch_eye_pos2 = tf.train.batch([test_images_queue, test_eye_pos_queue],
                                                 batch_size=self.batch_size,
-                                                capacity=500,
+                                                capacity=100,
                                                 num_threads=1
                                                 )
 

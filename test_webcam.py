@@ -18,7 +18,7 @@ import cv2
 import copy
 
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('/home/nimish/Programs/Hippo/Dllib-Pretrained/shape_predictor_5_face_landmarks.dat')
+predictor = dlib.shape_predictor('/home/nimish/Programs/Hippo/Dlib-Pretrained/shape_predictor_5_face_landmarks.dat')
 
 cap = cv2.VideoCapture(0)
 opt = TrainOptions().parse()
@@ -35,11 +35,12 @@ def capture_frame():
     if (len(rects) > 0):
 
         (x, y, w, h) = face_utils.rect_to_bb(rects[0])
-        scale = 1.5
+        scale = 1.22
         w1 = int(w*scale)
         h1 = int(h*scale)
         x1 = x - ((w1-w) // 2)
         y1 = y - ((h1-h) // 2)
+        y1 -= 20
 
 
         roi = frame[y1:y1+h1, x1:x1+w1]
@@ -74,11 +75,8 @@ def capture_frame():
 
 if __name__ == "__main__":
 
-    dataset = Dataset(opt)
-    gaze_gan = Gaze_GAN(dataset, opt)
-    gaze_gan.build_test_model()
 
-    # ## DATA GENERATION
+    # # DATA GENERATION
     # count = 0
     # while(True):
     #     input_data = capture_frame()
@@ -89,8 +87,8 @@ if __name__ == "__main__":
             
     #         ### ALWAYS CLEAR FOLDERS CustomData
     #         # SAVE IMAGE
-    #         cv2.imwrite(f"./dataset/CustomData/IMG/{count:04d}a.jpg", img_raw, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
-    #         cv2.imwrite(f"./dataset/CustomData/IMG/{count:04d}b.jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+    #         cv2.imwrite(f"./dataset/CustomData/IMG/{count:04d}a.jpg", img_raw, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+    #         cv2.imwrite(f"./dataset/CustomData/IMG/{count:04d}b.jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
     #         # META DATA
     #         txt_line = f"{count:04d}a {lx} {ly} {rx} {ry}"
@@ -99,12 +97,18 @@ if __name__ == "__main__":
     #         print(txt_line)
 
     #         cv2.imshow('IMG', img)
-    #         # cv2.imshow('RAW', img_raw)
+    #         cv2.imshow('RAW', img_raw)
     #         if cv2.waitKey(1) & 0xFF == ord('q'):
     #             break
 
     #         count += 1
-    #         #output_data = gaze_gan.test_webcam(input_data)
+    #         ###output_data = gaze_gan.test_webcam(input_data)
+
+
+    ## RUN TEST
+    dataset = Dataset(opt)
+    gaze_gan = Gaze_GAN(dataset, opt)
+    gaze_gan.build_test_model()
 
     gaze_gan.test()
 
