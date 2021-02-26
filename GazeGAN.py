@@ -115,7 +115,7 @@ class Gaze_GAN(object):
             threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
             # batch_num = 1000 / self.opt.batch_size
-            batch_num = 118
+            batch_num = 151
             for j in range(int(batch_num)):
                 real_test_batch, real_eye_pos = sess.run([testbatch, testmask])
                 batch_masks, batch_left_eye_pos, batch_right_eye_pos = self.get_Mask_and_pos(real_eye_pos)
@@ -126,7 +126,7 @@ class Gaze_GAN(object):
                 
                 output = sess.run([self.x, self.y], feed_dict=f_d)
                 output_concat = self.Transpose(np.array([output[0], output[1]]))
-                save_images(output_concat, '{}/{:02d}.jpg'.format(self.opt.test_sample_dir, j))
+                save_images(output_concat, '{}/{:03d}.jpg'.format(self.opt.test_sample_dir, j))
 
             coord.request_stop()
             coord.join(threads)

@@ -25,12 +25,20 @@ opt = TrainOptions().parse()
 
 os.environ['CUDA_VISIBLE_DEVICES'] = str(opt.gpu_id)
 
+rects = []
+first_done = False
+
 def capture_frame():
     ret, frame = cap.read()
     
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    rects = detector(gray, 1)
+    global rects
+    global first_done
+
+    if(first_done == False):
+        rects = detector(gray, 1)
+        first_done = True
 
     if (len(rects) > 0):
 
