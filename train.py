@@ -7,9 +7,7 @@ from Dataset import Dataset
 from GazeGAN import Gaze_GAN
 from config.train_options import TrainOptions
 
-print("1")
 opt = TrainOptions().parse()
-print("2")
 
 os.environ['CUDA_VISIBLE_DEVICES'] = str(opt.gpu_id)
 

@@ -40,8 +40,8 @@ class Dataset(object):
 
         fh.close()
 
-        # fh = open(os.path.join(self.data_dir, self.attr_0_txt))
-        fh = open(os.path.join(self.custom_data_dir, 'custom_test_fixed.txt'))
+        fh = open(os.path.join(self.data_dir, self.attr_0_txt))
+        # fh = open(os.path.join(self.custom_data_dir, 'custom_test_fixed.txt'))
         test_images_list = []
         test_eye_pos = []
 
@@ -49,15 +49,15 @@ class Dataset(object):
             eye_pos = []
             f = f.strip('\n')
             filenames = f.split(' ', 5)
-            # if os.path.exists(os.path.join(self.data_dir, "0/"+filenames[0]+".jpg")):
-            #     test_images_list.append(os.path.join(self.data_dir,"0/"+filenames[0]+".jpg"))
-            #     eye_pos.extend([int(value) for value in filenames[1:5]])
-            #     test_eye_pos.append(eye_pos)
-
-            if os.path.exists(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg")):
-                test_images_list.append(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg"))
+            if os.path.exists(os.path.join(self.data_dir, "0/"+filenames[0]+".jpg")):
+                test_images_list.append(os.path.join(self.data_dir,"0/"+filenames[0]+".jpg"))
                 eye_pos.extend([int(value) for value in filenames[1:5]])
                 test_eye_pos.append(eye_pos)
+
+            # if os.path.exists(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg")):
+            #     test_images_list.append(os.path.join(self.custom_data_dir, "IMG/"+filenames[0]+".jpg"))
+            #     eye_pos.extend([int(value) for value in filenames[1:5]])
+            #     test_eye_pos.append(eye_pos)
 
         fh.close()
         return train_images_list, train_eye_pos, test_images_list, test_eye_pos, len(test_images_list)
@@ -65,7 +65,7 @@ class Dataset(object):
     def read_images(self, input_queue):
 
         content = tf.read_file(input_queue)
-        image = tf.image.decode_jpeg(content, channels=self.channel)
+        image = tf.image.decode_jpeg(content, channels=self.channel, dct_method='INTEGER_ACCURATE')
         image = tf.cast(image, tf.float32)
         image = tf.image.resize_images(image, size=(self.height, self.width))
 

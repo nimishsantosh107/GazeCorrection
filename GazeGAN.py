@@ -114,8 +114,8 @@ class Gaze_GAN(object):
             coord = tf.train.Coordinator()
             threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
-            # batch_num = 1000 / self.opt.batch_size
-            batch_num = 111
+            batch_num = 1000 / self.opt.batch_size
+            # batch_num = 111
             for j in range(int(batch_num)):
                 real_test_batch, real_eye_pos = sess.run([testbatch, testmask])
                 batch_masks, batch_left_eye_pos, batch_right_eye_pos = self.get_Mask_and_pos(real_eye_pos)
