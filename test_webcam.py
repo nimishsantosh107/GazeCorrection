@@ -3,12 +3,14 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
+from typing_extensions import final
 from IMLib.utils import *
 
 import os
 from Dataset import Dataset
 from GazeGAN import Gaze_GAN
 from config.train_options import TrainOptions
+from Dataset import save_images
 
 from imutils import face_utils
 import numpy as np
@@ -119,14 +121,31 @@ if __name__ == "__main__":
     #         count += 1
     #         ###output_data = gaze_gan.test_webcam(input_data)
 
+    img = cv2.imread('dataset/CustomData/IMG/0040a.jpg')
 
+    # while(1):
+    #     cv2.imshow('IMG', img)
+    #     if cv2.waitKey(1) & 0xFF == ord('q'):
+    #         break
+
+    input_data = (img, 92, 107, 175, 103)
+
+    cap.release()
+    cv2.destroyAllWindows()
+        
     ## RUN TEST
     dataset = Dataset(opt)
     gaze_gan = Gaze_GAN(dataset, opt)
     gaze_gan.build_test_model()
 
-    gaze_gan.test()
-
-
-cap.release()
-cv2.destroyAllWindows()
+    return_output = gaze_gan.test_webcam(input_data)
+    final_output = (return_output + 1.0)
+    print(final_output)
+    final_output = final_output * 127.5
+    final_output = np.array(final_output, dtype=np.uint8)
+    print(final_output)
+    
+    while(1):
+        cv2.imshow('IMG', final_output)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break

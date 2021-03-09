@@ -101,6 +101,7 @@ class Gaze_GAN(object):
 
         with tf.Session(config=config) as sess:
             sess.run(init)
+            print(self.opt.checkpoints_dir)
             ckpt = tf.train.get_checkpoint_state(self.opt.checkpoints_dir)
             print('Load checkpoint')
             if ckpt and ckpt.model_checkpoint_path:
@@ -114,8 +115,8 @@ class Gaze_GAN(object):
             coord = tf.train.Coordinator()
             threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
-            batch_num = 1000 / self.opt.batch_size
-            # batch_num = 111
+            # batch_num = 1000 / self.opt.batch_size
+            batch_num = 111
             for j in range(int(batch_num)):
                 real_test_batch, real_eye_pos = sess.run([testbatch, testmask])
                 batch_masks, batch_left_eye_pos, batch_right_eye_pos = self.get_Mask_and_pos(real_eye_pos)
@@ -149,6 +150,7 @@ class Gaze_GAN(object):
         config.gpu_options.allow_growth = True
         self.saver = tf.train.Saver()
 
+        return_output = None
         with tf.Session(config=config) as sess:
             sess.run(init)
             ckpt = tf.train.get_checkpoint_state(self.opt.checkpoints_dir)
@@ -168,8 +170,7 @@ class Gaze_GAN(object):
             for j in range(int(batch_num)):
                 real_test_batch, real_eye_pos = sess.run([test_image, test_eye_pos])
                 # real_test_batch, real_eye_pos = sess.run([testbatch, testmask])
-                batch_masks, batch_left_eye_pos, batch_right_eye_pos = self.get_Mask_and_pos(
-                    real_eye_pos)
+                batch_masks, batch_left_eye_pos, batch_right_eye_pos = self.get_Mask_and_pos(real_eye_pos)
                 f_d = {self.x: real_test_batch,
                        self.xm: batch_masks,
                        self.x_left_p: batch_left_eye_pos,
@@ -177,10 +178,13 @@ class Gaze_GAN(object):
 
                 output = sess.run([self.x, self.y], feed_dict=f_d)
                 output_concat = self.Transpose(np.array([output[0], output[1]]))
-                save_images(output_concat, '{}/{:02d}.jpg'.format(self.opt.test_sample_dir, j), is_verse=False)
+                # save_images(output_concat, '{}/{:02d}.jpg'.format(self.opt.test_sample_dir, j), is_verse=False)
+                return_output = output_concat
 
             coord.request_stop()
             coord.join(threads)
+
+            return return_output
 
     def train(self):
 
@@ -421,7 +425,7 @@ class Gaze_GAN(object):
         batch_left_eye_pos = []
         batch_right_eye_pos = []
         for i in range(self.opt.batch_size):
-
+            print(self.opt.batch_size)
             current_eye_pos = eye_pos[i]
             left_eye_pos = []
             right_eye_pos = []

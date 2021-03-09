@@ -3,6 +3,6 @@
 **/dataset
 **/pretrained*
 **/TEST_INPUT
-**/TRAINING
+**/TRAINING*
 **/GAZE.zip
-TRAINING.zip
+TRAINING*.zip

@@ -27,9 +27,9 @@ class BaseOptions():
         parser.add_argument('--n_layers_d', type=int, default=5, help='layers of d model')
         parser.add_argument('--gpu_id', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         parser.add_argument('--exper_name', type=str, default='TRAINING', help='name of the experiment. It decides where to store samples and models')
-        parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
-        parser.add_argument('--log_dir', type=str, default='./logs', help='logs for tensorboard')
-        parser.add_argument('--sample_dir', type=str, default='./sample_dir', help='dir for sample images')
+        parser.add_argument('--checkpoints_dir', type=str, default='checkpoints', help='models are saved here')
+        parser.add_argument('--log_dir', type=str, default='logs', help='logs for tensorboard')
+        parser.add_argument('--sample_dir', type=str, default='sample_dir', help='dir for sample images')
         parser.add_argument('--test_sample_dir', type=str, default='./test_samples', help='test sample images are saved here')
         parser.add_argument('--resize_or_crop', type=str, default='resize_and_crop', help='scaling and cropping of images at load time [resize_and_crop|crop|scale_width|scale_width_and_crop]')
 
